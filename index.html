@@ -1,852 +1,1066 @@
 <!doctype html>
 <html lang="ka">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>სილაბუსი — Web Front-End</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>სილაბუსი — Web Front-End</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    :root {
-      --ink: #0f1923;
-      --ink-mid: #2d3d4f;
-      --ink-soft: #6b7f94;
-      --ink-xsoft: #9fb0c0;
-      --teal: #1a7a6e;
-      --teal-light: #d6f0ec;
-      --teal-mid: #2fa898;
-      --teal-pale: #edf8f6;
-      --gold: #c9932c;
-      --gold-light: #fdf3e0;
-      --line: #dde6ee;
-      --white: #ffffff;
-      --bg: #f0f4f8;
-      --card: #ffffff;
-      --warm: #fafbfc;
-    }
+      :root {
+        --ink: #0f1923;
+        --ink-mid: #2d3d4f;
+        --ink-soft: #6b7f94;
+        --ink-xsoft: #9fb0c0;
+        --teal: #1a7a6e;
+        --teal-light: #d6f0ec;
+        --teal-mid: #2fa898;
+        --teal-pale: #edf8f6;
+        --gold: #c9932c;
+        --gold-light: #fdf3e0;
+        --line: #dde6ee;
+        --white: #ffffff;
+        --bg: #f0f4f8;
+        --card: #ffffff;
+        --warm: #fafbfc;
+      }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      display: flex;
-      justify-content: center;
-      padding: 40px 20px 60px;
-      min-height: 100vh;
-      color: var(--ink);
-    }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px 60px;
+        min-height: 100vh;
+        color: var(--ink);
+      }
 
-    .page {
-      width: 820px;
-      background: var(--white);
-      box-shadow: 0 20px 80px rgba(0,0,0,0.10), 0 2px 12px rgba(0,0,0,0.05);
-      overflow: hidden;
-      border-radius: 4px;
-    }
+      .page {
+        width: 820px;
+        background: var(--white);
+        box-shadow:
+          0 20px 80px rgba(0, 0, 0, 0.1),
+          0 2px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        border-radius: 4px;
+      }
 
-    /* ── HEADER ── */
-    .header {
-      position: relative;
-      height: 280px;
-      overflow: hidden;
-      background: var(--ink);
-    }
-    .header-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(135deg, #0f2a3a 0%, #0d3d35 50%, #0a2830 100%);
-    }
-    .header-pattern {
-      position: absolute;
-      inset: 0;
-      opacity: 0.06;
-      background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.4) 39px, rgba(255,255,255,0.4) 40px),
-        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.4) 39px, rgba(255,255,255,0.4) 40px);
-    }
-    .header-accent {
-      position: absolute;
-      right: -60px;
-      top: -60px;
-      width: 380px;
-      height: 380px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(47,168,152,0.25) 0%, transparent 70%);
-    }
-    .header-accent-2 {
-      position: absolute;
-      left: -40px;
-      bottom: -80px;
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,147,44,0.12) 0%, transparent 70%);
-    }
-    .header-content {
-      position: relative;
-      z-index: 2;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 52px 44px;
-    }
-    .header-eyebrow {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .eyebrow-pill {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--teal-mid);
-      border: 1px solid rgba(47,168,152,0.4);
-      background: rgba(47,168,152,0.08);
-      padding: 4px 12px;
-      border-radius: 20px;
-    }
-    .eyebrow-line {
-      width: 40px;
-      height: 1px;
-      background: rgba(255,255,255,0.2);
-    }
-    .eyebrow-year {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 1.5px;
-      color: rgba(255,255,255,0.35);
-      text-transform: uppercase;
-    }
-    .header-title {
-      font-family: 'Playfair Display', serif;
-      color: #fff;
-      font-size: 32px;
-      line-height: 1.25;
-      font-weight: 600;
-      max-width: 560px;
-      letter-spacing: -0.3px;
-    }
-    .header-title em {
-      color: #7de0d4;
-      font-style: italic;
-      font-weight: 400;
-    }
-    .header-meta {
-      position: absolute;
-      top: 36px;
-      right: 52px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 6px;
-    }
-    .header-meta-item {
-      font-size: 11px;
-      color: rgba(255,255,255,0.45);
-      font-weight: 400;
-    }
-    .header-meta-item strong {
-      color: rgba(255,255,255,0.75);
-      font-weight: 500;
-    }
+      /* ── HEADER ── */
+      .header {
+        position: relative;
+        height: 280px;
+        overflow: hidden;
+        background: var(--ink);
+      }
+      .header-bg {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          #0f2a3a 0%,
+          #0d3d35 50%,
+          #0a2830 100%
+        );
+      }
+      .header-pattern {
+        position: absolute;
+        inset: 0;
+        opacity: 0.06;
+        background-image:
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 39px,
+            rgba(255, 255, 255, 0.4) 39px,
+            rgba(255, 255, 255, 0.4) 40px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 39px,
+            rgba(255, 255, 255, 0.4) 39px,
+            rgba(255, 255, 255, 0.4) 40px
+          );
+      }
+      .header-accent {
+        position: absolute;
+        right: -60px;
+        top: -60px;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(47, 168, 152, 0.25) 0%,
+          transparent 70%
+        );
+      }
+      .header-accent-2 {
+        position: absolute;
+        left: -40px;
+        bottom: -80px;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(201, 147, 44, 0.12) 0%,
+          transparent 70%
+        );
+      }
+      .header-content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 0 52px 44px;
+      }
+      .header-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .eyebrow-pill {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--teal-mid);
+        border: 1px solid rgba(47, 168, 152, 0.4);
+        background: rgba(47, 168, 152, 0.08);
+        padding: 4px 12px;
+        border-radius: 20px;
+      }
+      .eyebrow-line {
+        width: 40px;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .eyebrow-year {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        color: rgba(255, 255, 255, 0.35);
+        text-transform: uppercase;
+      }
+      .header-title {
+        font-family: "JetBrains Mono", monospace;
+        color: #fff;
+        font-size: 32px;
+        line-height: 1.25;
+        font-weight: 600;
+        max-width: 560px;
+        letter-spacing: -0.3px;
+      }
+      .header-title em {
+        color: #7de0d4;
+        font-weight: 400;
+      }
+      .header-meta {
+        position: absolute;
+        top: 36px;
+        right: 52px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+      }
+      .header-meta-item {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.45);
+        font-weight: 400;
+      }
+      .header-meta-item strong {
+        color: rgba(255, 255, 255, 0.75);
+        font-weight: 500;
+      }
 
-    /* ── STATS BAR ── */
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      background: var(--ink);
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-    .stat-item {
-      padding: 18px 20px;
-      border-right: 1px solid rgba(255,255,255,0.07);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .stat-item:last-child { border-right: none; }
-    .stat-icon {
-      font-size: 18px;
-      opacity: 0.75;
-    }
-    .stat-label {
-      font-size: 9.5px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
-      display: block;
-      margin-bottom: 2px;
-    }
-    .stat-value {
-      font-size: 13px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.85);
-      display: block;
-    }
-    .stat-sub {
-      font-size: 10px;
-      color: rgba(255,255,255,0.4);
-      display: block;
-      margin-top: 1px;
-    }
+      /* ── STATS BAR ── */
+      .stats-bar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        background: var(--ink);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .stat-item {
+        padding: 18px 20px;
+        border-right: 1px solid rgba(255, 255, 255, 0.07);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .stat-item:last-child {
+        border-right: none;
+      }
+      .stat-icon {
+        font-size: 18px;
+        opacity: 0.75;
+      }
+      .stat-label {
+        font-size: 9.5px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
+        display: block;
+        margin-bottom: 2px;
+      }
+      .stat-value {
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.85);
+        display: block;
+      }
+      .stat-sub {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.4);
+        display: block;
+        margin-top: 1px;
+      }
 
-    /* ── BODY ── */
-    .body { padding: 48px 52px 56px; }
+      /* ── BODY ── */
+      .body {
+        padding: 48px 52px 56px;
+      }
 
-    /* ── SECTION ── */
-    .section { margin-bottom: 44px; }
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    .section-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--teal-mid);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      min-width: 28px;
-    }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 19px;
-      color: var(--ink);
-      font-weight: 600;
-      letter-spacing: -0.2px;
-    }
-    .section-rule {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(to right, var(--line), transparent);
-      margin-left: 8px;
-    }
+      /* ── SECTION ── */
+      .section {
+        margin-bottom: 44px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .section-num {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--teal-mid);
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        min-width: 28px;
+      }
+      .section-title {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 19px;
+        color: var(--ink);
+        font-weight: 600;
+        letter-spacing: -0.2px;
+      }
+      .section-rule {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(to right, var(--line), transparent);
+        margin-left: 8px;
+      }
 
-    /* ── GOAL BOX ── */
-    .goal-box {
-      background: var(--teal-pale);
-      border-left: 3px solid var(--teal-mid);
-      border-radius: 0 10px 10px 0;
-      padding: 18px 22px;
-      font-size: 14px;
-      line-height: 1.75;
-      color: var(--ink-mid);
-    }
+      /* ── GOAL BOX ── */
+      .goal-box {
+        background: var(--teal-pale);
+        border-left: 3px solid var(--teal-mid);
+        border-radius: 0 10px 10px 0;
+        padding: 18px 22px;
+        font-size: 14px;
+        line-height: 1.75;
+        color: var(--ink-mid);
+      }
 
-    /* ── TWO COL ── */
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
+      /* ── TWO COL ── */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
 
-    /* ── CARD ── */
-    .card {
-      background: var(--warm);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 22px 24px;
-    }
-    .card-title {
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: var(--teal);
-      margin-bottom: 14px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--line);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .card-desc {
-      font-size: 13.5px;
-      color: var(--ink-mid);
-      line-height: 1.7;
-    }
-    .check-list { list-style: none; }
-    .check-list li {
-      font-size: 13.5px;
-      color: var(--ink-mid);
-      padding: 5px 0;
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      line-height: 1.5;
-    }
-    .check-list li::before {
-      content: '';
-      width: 16px;
-      height: 16px;
-      background: var(--teal-light);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath d='M1.5 4l1.8 1.8 3.2-3.6' stroke='%231a7a6e' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: center;
-    }
+      /* ── CARD ── */
+      .card {
+        background: var(--warm);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 22px 24px;
+      }
+      .card-title {
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: var(--teal);
+        margin-bottom: 14px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .card-desc {
+        font-size: 13.5px;
+        color: var(--ink-mid);
+        line-height: 1.7;
+      }
+      .check-list {
+        list-style: none;
+      }
+      .check-list li {
+        font-size: 13.5px;
+        color: var(--ink-mid);
+        padding: 5px 0;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        line-height: 1.5;
+      }
+      .check-list li::before {
+        content: "";
+        width: 16px;
+        height: 16px;
+        background: var(--teal-light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath d='M1.5 4l1.8 1.8 3.2-3.6' stroke='%231a7a6e' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+      }
 
-    /* ── SESSIONS TABLE ── */
-    .sessions-wrap {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-    .sessions-head {
-      display: grid;
-      grid-template-columns: 120px 1fr 160px;
-      background: var(--ink);
-    }
-    .sessions-head div {
-      padding: 12px 18px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
-    }
-    .block-label {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 18px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      background: linear-gradient(90deg, var(--teal) 0%, var(--teal-mid) 100%);
-      color: rgba(255,255,255,0.9);
-    }
-    .block-label-num {
-      background: rgba(255,255,255,0.15);
-      border-radius: 20px;
-      padding: 2px 8px;
-      font-size: 9px;
-    }
-    .session-row {
-      display: grid;
-      grid-template-columns: 120px 1fr 160px;
-      border-top: 1px solid var(--line);
-      transition: background 0.15s;
-    }
-    .session-row:hover { background: var(--teal-pale); }
-    .s-num {
-      padding: 16px 18px;
-      border-right: 1px solid var(--line);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 3px;
-    }
-    .s-num strong {
-      font-size: 12.5px;
-      color: var(--teal);
-      font-weight: 700;
-    }
-    .s-num span {
-      font-size: 10.5px;
-      color: var(--ink-xsoft);
-    }
-    .s-content {
-      padding: 16px 18px;
-      border-right: 1px solid var(--line);
-    }
-    .s-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 4px;
-      letter-spacing: -0.1px;
-    }
-    .s-topics {
-      font-size: 11.5px;
-      color: var(--ink-soft);
-      line-height: 1.6;
-    }
-    .s-activity {
-      font-size: 11px;
-      color: var(--gold);
-      font-weight: 500;
-      margin-top: 6px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .s-tags {
-      padding: 16px 14px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      align-content: flex-start;
-    }
-    .tag {
-      background: var(--teal-pale);
-      color: var(--teal);
-      font-size: 9.5px;
-      font-weight: 600;
-      padding: 3px 9px;
-      border-radius: 20px;
-      border: 1px solid rgba(47,168,152,0.2);
-      letter-spacing: 0.3px;
-    }
+      /* ── SESSIONS TABLE ── */
+      .sessions-wrap {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .sessions-head {
+        display: grid;
+        grid-template-columns: 120px 1fr 160px;
+        background: var(--ink);
+      }
+      .sessions-head div {
+        padding: 12px 18px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .block-label {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 18px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        background: linear-gradient(
+          90deg,
+          var(--teal) 0%,
+          var(--teal-mid) 100%
+        );
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .block-label-num {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 20px;
+        padding: 2px 8px;
+        font-size: 9px;
+      }
+      .session-row {
+        display: grid;
+        grid-template-columns: 120px 1fr 160px;
+        border-top: 1px solid var(--line);
+        transition: background 0.15s;
+      }
+      .session-row:hover {
+        background: var(--teal-pale);
+      }
+      .s-num {
+        padding: 16px 18px;
+        border-right: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 3px;
+      }
+      .s-num strong {
+        font-size: 12.5px;
+        color: var(--teal);
+        font-weight: 700;
+      }
+      .s-num span {
+        font-size: 10.5px;
+        color: var(--ink-xsoft);
+      }
+      .s-content {
+        padding: 16px 18px;
+        border-right: 1px solid var(--line);
+      }
+      .s-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--ink);
+        margin-bottom: 4px;
+        letter-spacing: -0.1px;
+      }
+      .s-topics {
+        font-size: 11.5px;
+        color: var(--ink-soft);
+        line-height: 1.6;
+      }
+      .s-activity {
+        font-size: 11px;
+        color: var(--gold);
+        font-weight: 500;
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .s-tags {
+        padding: 16px 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        align-content: flex-start;
+      }
+      .tag {
+        background: var(--teal-pale);
+        color: var(--teal);
+        font-size: 9.5px;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: 20px;
+        border: 1px solid rgba(47, 168, 152, 0.2);
+        letter-spacing: 0.3px;
+      }
 
-    /* ── OUTCOMES ── */
-    .outcomes-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .outcome-item {
-      display: flex;
-      gap: 14px;
-      padding: 16px 18px;
-      background: var(--warm);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      align-items: flex-start;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .outcome-item:hover {
-      border-color: rgba(47,168,152,0.3);
-      box-shadow: 0 2px 12px rgba(47,168,152,0.08);
-    }
-    .outcome-icon {
-      width: 26px;
-      height: 26px;
-      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-mid) 100%);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      color: white;
-      font-size: 11px;
-      font-weight: 700;
-    }
-    .outcome-text {
-      font-size: 13px;
-      color: var(--ink-mid);
-      line-height: 1.55;
-      font-weight: 400;
-      padding-top: 2px;
-    }
+      /* ── OUTCOMES ── */
+      .outcomes-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .outcome-item {
+        display: flex;
+        gap: 14px;
+        padding: 16px 18px;
+        background: var(--warm);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        align-items: flex-start;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+      }
+      .outcome-item:hover {
+        border-color: rgba(47, 168, 152, 0.3);
+        box-shadow: 0 2px 12px rgba(47, 168, 152, 0.08);
+      }
+      .outcome-icon {
+        width: 26px;
+        height: 26px;
+        background: linear-gradient(
+          135deg,
+          var(--teal) 0%,
+          var(--teal-mid) 100%
+        );
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .outcome-text {
+        font-size: 13px;
+        color: var(--ink-mid);
+        line-height: 1.55;
+        font-weight: 400;
+        padding-top: 2px;
+      }
 
-    /* ── RESOURCES ── */
-    .resources-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .resource-chip {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      background: var(--warm);
-      border: 1px solid var(--line);
-      border-radius: 40px;
-      font-size: 13px;
-      color: var(--ink-mid);
-      font-weight: 500;
-      transition: border-color 0.15s, color 0.15s;
-    }
-    .resource-chip:hover {
-      border-color: var(--teal-mid);
-      color: var(--teal);
-    }
-    .resource-chip-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--teal-mid);
-      border-radius: 50%;
-    }
+      /* ── RESOURCES ── */
+      .resources-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .resource-chip {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: var(--warm);
+        border: 1px solid var(--line);
+        border-radius: 40px;
+        font-size: 13px;
+        color: var(--ink-mid);
+        font-weight: 500;
+        transition:
+          border-color 0.15s,
+          color 0.15s;
+      }
+      .resource-chip:hover {
+        border-color: var(--teal-mid);
+        color: var(--teal);
+      }
+      .resource-chip-dot {
+        width: 6px;
+        height: 6px;
+        background: var(--teal-mid);
+        border-radius: 50%;
+      }
 
-    /* ── FOOTER ── */
-    .footer {
-      margin-top: 48px;
-      padding-top: 24px;
-      border-top: 1px solid var(--line);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .footer-left { display: flex; align-items: center; gap: 10px; }
-    .footer-brand {
-      font-family: 'Playfair Display', serif;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--teal);
-      letter-spacing: -0.3px;
-    }
-    .footer-divider {
-      width: 1px;
-      height: 18px;
-      background: var(--line);
-    }
-    .footer-info {
-      font-size: 12px;
-      color: var(--ink-soft);
-    }
-    .footer-badge {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--teal);
-      border: 1.5px solid rgba(47,168,152,0.3);
-      padding: 5px 14px;
-      border-radius: 20px;
-      background: var(--teal-pale);
-    }
+      /* ── FOOTER ── */
+      .footer {
+        margin-top: 48px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .footer-brand {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--teal);
+        letter-spacing: -0.3px;
+      }
+      .footer-divider {
+        width: 1px;
+        height: 18px;
+        background: var(--line);
+      }
+      .footer-info {
+        font-size: 12px;
+        color: var(--ink-soft);
+      }
+      .footer-badge {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--teal);
+        border: 1.5px solid rgba(47, 168, 152, 0.3);
+        padding: 5px 14px;
+        border-radius: 20px;
+        background: var(--teal-pale);
+      }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 700px) {
-      body { padding: 0; background: white; }
-      .page { width: 100%; box-shadow: none; border-radius: 0; }
-      .header { height: 220px; }
-      .header-content { padding: 0 24px 32px; }
-      .header-title { font-size: 22px; }
-      .header-meta { display: none; }
-      .stats-bar { grid-template-columns: 1fr 1fr; }
-      .stat-item:nth-child(2) { border-right: none; }
-      .body { padding: 28px 20px 36px; }
-      .two-col, .outcomes-grid { grid-template-columns: 1fr; }
-      .sessions-head { grid-template-columns: 90px 1fr; }
-      .sessions-head div:last-child { display: none; }
-      .session-row { grid-template-columns: 90px 1fr; }
-      .s-tags { display: none; }
-      .footer { flex-direction: column; gap: 14px; align-items: flex-start; }
-    }
+      /* ── RESPONSIVE ── */
+      @media (max-width: 700px) {
+        body {
+          padding: 0;
+          background: white;
+        }
+        .page {
+          width: 100%;
+          box-shadow: none;
+          border-radius: 0;
+        }
+        .header {
+          height: 220px;
+        }
+        .header-content {
+          padding: 0 24px 32px;
+        }
+        .header-title {
+          font-size: 22px;
+        }
+        .header-meta {
+          display: none;
+        }
+        .stats-bar {
+          grid-template-columns: 1fr 1fr;
+        }
+        .stat-item:nth-child(2) {
+          border-right: none;
+        }
+        .body {
+          padding: 28px 20px 36px;
+        }
+        .two-col,
+        .outcomes-grid {
+          grid-template-columns: 1fr;
+        }
+        .sessions-head {
+          grid-template-columns: 90px 1fr;
+        }
+        .sessions-head div:last-child {
+          display: none;
+        }
+        .session-row {
+          grid-template-columns: 90px 1fr;
+        }
+        .s-tags {
+          display: none;
+        }
+        .footer {
+          flex-direction: column;
+          gap: 14px;
+          align-items: flex-start;
+        }
+      }
 
-    @media print {
-      body { background: white; padding: 0; }
-      .page { box-shadow: none; width: 820px; }
-      .two-col, .outcomes-grid { grid-template-columns: 1fr 1fr !important; }
-      .sessions-head { grid-template-columns: 120px 1fr 160px !important; }
-      .session-row { grid-template-columns: 120px 1fr 160px !important; }
-      .s-tags { display: flex !important; }
-      .stats-bar { grid-template-columns: repeat(4,1fr) !important; }
-    }
-  </style>
-</head>
-<body>
-<div class="page">
-
-  <!-- HEADER -->
-  <div class="header">
-    <div class="header-bg"></div>
-    <div class="header-pattern"></div>
-    <div class="header-accent"></div>
-    <div class="header-accent-2"></div>
-    <div class="header-meta">
-      <div class="header-meta-item"><strong>GEOLAB</strong> · <strong>TBC TechSchool</strong></div>
-      <div class="header-meta-item">საბაზისო კურსი · 2026</div>
-    </div>
-    <div class="header-content">
-      <div class="header-eyebrow">
-        <div class="eyebrow-pill">კურსის სილაბუსი</div>
-        <div class="eyebrow-line"></div>
-        <div class="eyebrow-year">Front-End Web</div>
-      </div>
-      <h1 class="header-title">
-        შესავალი ვებ პროგრამირებაში:<br/>
-        <em>Front-End (HTML, CSS)</em>
-      </h1>
-    </div>
-  </div>
-
-  <!-- STATS BAR -->
-  <div class="stats-bar">
-    <div class="stat-item">
-      <div class="stat-icon">📋</div>
-      <div>
-        <span class="stat-label">სტატუსი</span>
-        <span class="stat-value">საბაზისო კურსი</span>
-      </div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-icon">📅</div>
-      <div>
-        <span class="stat-label">ხანგრძლივობა</span>
-        <span class="stat-value">3 კვირა</span>
-        <span class="stat-sub">6 ლექცია · 12 საათი</span>
-      </div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-icon">🎓</div>
-      <div>
-        <span class="stat-label">ლექტორი</span>
-        <span class="stat-value">ესმირა აღამედოვა</span>
-      </div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-icon">✉</div>
-      <div>
-        <span class="stat-label">ელ-ფოსტა</span>
-        <span class="stat-value">esmira.agamedova</span>
-        <span class="stat-sub">@geolab.edu.ge</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="body">
-
-    <!-- GOAL -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">01</span>
-        <h2 class="section-title">სასწავლო ტრენინგის მიზანი</h2>
-        <div class="section-rule"></div>
-      </div>
-      <div class="goal-box">
-        კურსის მიზანია სტუდენტებს მისცეს ვებ პროგრამირების საწყისი ცოდნა და პრაქტიკული უნარები, რათა მათ შეძლონ HTML და CSS გამოყენებით ფუნქციური და ვიზუალურად გამართული ვებგვერდების შექმნა. კურსი ასევე მოიცავს AI ინსტრუმენტებისა და GitHub-ის გამოყენებას თანამედროვე ვებ-განვითარებაში.
-      </div>
-    </div>
-
-    <!-- FORMAT -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">02</span>
-        <h2 class="section-title">კურსის ფორმატი</h2>
-        <div class="section-rule"></div>
-      </div>
-      <div class="goal-box">
-        კურსი მოიცავს თეორიულ და პრაქტიკულ სწავლებას. თითოეული ლექცია აერთიანებს ახსნას, Live Coding-ს და პრაქტიკულ დავალებებს. სწავლება მიმდინარეობს ინტერაქტიულ ფორმატში, ინდივიდუალური და გუნდური მუშაობის კომბინაციით. განსაკუთრებული ყურადღება ეთმობა პროექტზე დაფუძნებულ სწავლას (Project-Based Learning).
-      </div>
-    </div>
-
-    <!-- SESSIONS -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">03</span>
-        <h2 class="section-title">სასწავლო კურსის შინაარსი</h2>
-        <div class="section-rule"></div>
-      </div>
-      <div class="sessions-wrap">
-        <div class="sessions-head">
-          <div>სესია</div>
-          <div>შინაარსი</div>
-          <div>საკვანძო ცნებები</div>
+      @media print {
+        body {
+          background: white;
+          padding: 0;
+        }
+        .page {
+          box-shadow: none;
+          width: 820px;
+        }
+        .two-col,
+        .outcomes-grid {
+          grid-template-columns: 1fr 1fr !important;
+        }
+        .sessions-head {
+          grid-template-columns: 120px 1fr 160px !important;
+        }
+        .session-row {
+          grid-template-columns: 120px 1fr 160px !important;
+        }
+        .s-tags {
+          display: flex !important;
+        }
+        .stats-bar {
+          grid-template-columns: repeat(4, 1fr) !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <!-- HEADER -->
+      <div class="header">
+        <div class="header-bg"></div>
+        <div class="header-pattern"></div>
+        <div class="header-accent"></div>
+        <div class="header-accent-2"></div>
+        <div class="header-meta">
+          <div class="header-meta-item">
+            <strong>GEOLAB</strong> · <strong>TBC TechSchool</strong>
+          </div>
+          <div class="header-meta-item">საბაზისო კურსი · 2026</div>
         </div>
-
-        <div class="block-label">
-          <span class="block-label-num">ბლოკი 1</span>
-          Front-End-ის საფუძვლები
+        <div class="header-content">
+          <div class="header-eyebrow">
+            <div class="eyebrow-pill">კურსის სილაბუსი</div>
+            <div class="eyebrow-line"></div>
+            <div class="eyebrow-year">Front-End Web</div>
+          </div>
+          <h1 class="header-title">
+            შესავალი ვებ პროგრამირებაში:<br />
+            <em style="font-style: normal;">Front-End (HTML, CSS)</em>
+          </h1>
         </div>
+      </div>
 
-        <div class="session-row">
-          <div class="s-num"><strong>ლექცია 1</strong><span>2 საათი</span></div>
-          <div class="s-content">
-            <div class="s-title">შესავალი და გარემოს გამართვა</div>
-            <div class="s-topics">VS Code · GitHub · ვების პრინციპები · პირველი HTML ფაილი</div>
-            <div class="s-activity">⚡ Live Coding: პირველი HTML გვერდის შექმნა</div>
-          </div>
-          <div class="s-tags">
-            <span class="tag">VS Code</span><span class="tag">GitHub</span><span class="tag">HTML</span>
-          </div>
-        </div>
-
-        <div class="session-row">
-          <div class="s-num"><strong>ლექცია 2</strong><span>2 საათი</span></div>
-          <div class="s-content">
-            <div class="s-title">HTML სტრუქტურა</div>
-            <div class="s-topics">ტეგები · სიები · სურათები · ლინკები · სემანტიკური HTML</div>
-            <div class="s-activity">⚡ პრაქტიკა: მარტივი ვებგვერდის აწყობა</div>
-          </div>
-          <div class="s-tags">
-            <span class="tag">HTML ტეგები</span><span class="tag">სემანტიკა</span>
-          </div>
-        </div>
-
-        <div class="session-row">
-          <div class="s-num"><strong>ლექცია 3</strong><span>2 საათი</span></div>
-          <div class="s-content">
-            <div class="s-title">CSS დიზაინი</div>
-            <div class="s-topics">ფერები · ფონტები · Box Model · სელექტორები · DevTools</div>
-            <div class="s-activity">⚡ კოდ-რევიუ</div>
-          </div>
-          <div class="s-tags">
-            <span class="tag">CSS</span><span class="tag">Box Model</span><span class="tag">DevTools</span>
-          </div>
-        </div>
-
-        <div class="session-row">
-          <div class="s-num"><strong>ლექცია 4</strong><span>2 საათი</span></div>
-          <div class="s-content">
-            <div class="s-title">Responsive დიზაინი</div>
-            <div class="s-topics">Flexbox · Media Queries · Breakpoints · AI ინსტრუმენტები</div>
-            <div class="s-activity">⚡ Flexbox Froggy</div>
-          </div>
-          <div class="s-tags">
-            <span class="tag">Flexbox</span><span class="tag">Media Queries</span><span class="tag">AI</span>
-          </div>
-        </div>
-
-        <div class="block-label">
-          <span class="block-label-num">ბლოკი 2</span>
-          პროექტზე მუშაობა
-        </div>
-
-        <div class="session-row">
-          <div class="s-num"><strong>ლექცია 5</strong><span>2 საათი</span></div>
-          <div class="s-content">
-            <div class="s-title">AI და გუნდური მუშაობა</div>
-            <div class="s-topics">GitHub Copilot · ChatGPT · საინტერესო მასალები · გუნდების ჩამოყალიბება</div>
-            <div class="s-activity">⚡ პროექტის კონცეფციის განსაზღვრა</div>
-          </div>
-          <div class="s-tags">
-            <span class="tag">Copilot</span><span class="tag">ChatGPT</span>
+      <!-- STATS BAR -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-icon">📋</div>
+          <div>
+            <span class="stat-label">სტატუსი</span>
+            <span class="stat-value">საბაზისო კურსი</span>
           </div>
         </div>
-
-        <div class="session-row">
-          <div class="s-num"><strong>ლექცია 6</strong><span>2 საათი</span></div>
-          <div class="s-content">
-            <div class="s-title">პროექტის ვორქშოპი &amp; Code Review</div>
-            <div class="s-topics">ფინალური პროექტების რევიუ და დახმარება</div>
-            <div class="s-activity">⚡ სტუდენტები ერთმანეთს ამოწმებენ კოდს</div>
-          </div>
-          <div class="s-tags">
-            <span class="tag">Code Review</span>
+        <div class="stat-item">
+          <div class="stat-icon">📅</div>
+          <div>
+            <span class="stat-label">ხანგრძლივობა</span>
+            <span class="stat-value">3 კვირა</span>
+            <span class="stat-sub">6 ლექცია · 12 საათი</span>
           </div>
         </div>
-
-        <div class="session-row">
-          <div class="s-num"><strong>Demo Day</strong><span>2 საათი</span></div>
-          <div class="s-content">
-            <div class="s-title">საბოლოო პროექტის წარდგენა</div>
-            <div class="s-topics">ვებ-გვერდი · გამოწვევები · AI-ს როლი</div>
-            <div class="s-activity">⚡ რეალური აუდიტორიის წინაშე წარდგენა</div>
+        <div class="stat-item">
+          <div class="stat-icon">🎓</div>
+          <div>
+            <span class="stat-label">ლექტორი</span>
+            <span class="stat-value">ესმირა აღამედოვა</span>
           </div>
-          <div class="s-tags">
-            <span class="tag">პრეზენტაცია</span>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">✉</div>
+          <div>
+            <span class="stat-label">ელ-ფოსტა</span>
+            <span class="stat-value">esmira.agamedova</span>
+            <span class="stat-sub">@geolab.edu.ge</span>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- FINAL PROJECT -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">04</span>
-        <h2 class="section-title">ფინალური პროექტი</h2>
-        <div class="section-rule"></div>
-      </div>
-      <div class="two-col">
-        <div class="card">
-          <div class="card-title">📄 პროექტის აღწერა</div>
-          <p class="card-desc">სტუდენტებმა ჯგუფებში უნდა შექმნან სასურველ თემაზე ვებგვერდი HTML და CSS-ის გამოყენებით. პროექტი ქმნის პორტფოლიოს ნაწილს.</p>
+      <div class="body">
+        <!-- GOAL -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-num">01</span>
+            <h2 class="section-title">სასწავლო ტრენინგის მიზანი</h2>
+            <div class="section-rule"></div>
+          </div>
+          <div class="goal-box">
+            კურსის მიზანია სტუდენტებს მისცეს ვებ პროგრამირების საწყისი ცოდნა და
+            პრაქტიკული უნარები, რათა მათ შეძლონ HTML და CSS გამოყენებით
+            ფუნქციური და ვიზუალურად გამართული ვებგვერდების შექმნა. კურსი ასევე
+            მოიცავს AI ინსტრუმენტებისა და GitHub-ის გამოყენებას თანამედროვე
+            ვებ-განვითარებაში.
+          </div>
         </div>
-        <div class="card">
-          <div class="card-title">✅ მოთხოვნები</div>
-          <ul class="check-list">
-            <li>მინიმუმ 3 გვერდი</li>
-            <li>Responsive დიზაინი</li>
-            <li>სემანტიკური HTML</li>
-            <li>CSS სტილიზაცია</li>
-            <li>ვიზუალური ელემენტები</li>
-          </ul>
+
+        <!-- FORMAT -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-num">02</span>
+            <h2 class="section-title">კურსის ფორმატი</h2>
+            <div class="section-rule"></div>
+          </div>
+          <div class="goal-box">
+            კურსი მოიცავს თეორიულ და პრაქტიკულ სწავლებას. თითოეული ლექცია
+            აერთიანებს ახსნას, Live Coding-ს და პრაქტიკულ დავალებებს. სწავლება
+            მიმდინარეობს ინტერაქტიულ ფორმატში, ინდივიდუალური და გუნდური მუშაობის
+            კომბინაციით. განსაკუთრებული ყურადღება ეთმობა პროექტზე დაფუძნებულ
+            სწავლას (Project-Based Learning).
+          </div>
+        </div>
+
+        <!-- 🔥 მხოლოდ შეიცვალა SESSIONS ნაწილი + დავამატე HOMEWORK -->
+
+        <!-- SESSIONS -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-num">03</span>
+            <h2 class="section-title">სასწავლო კურსის შინაარსი</h2>
+            <div class="section-rule"></div>
+          </div>
+
+          <div class="sessions-wrap">
+            <div class="sessions-head">
+              <div>სესია</div>
+              <div>შინაარსი</div>
+              <div>საკვანძო ცნებები</div>
+            </div>
+
+            <!-- BLOCK 1 -->
+            <div class="block-label">
+              <span class="block-label-num">ბლოკი 1</span>
+              Front-End-ის საფუძვლები
+            </div>
+
+            <!-- LECTURE 1 -->
+            <div class="session-row">
+              <div class="s-num">
+                <strong>ლექცია 1</strong><span>2 საათი</span>
+              </div>
+              <div class="s-content">
+                <div class="s-title">შესავალი და გარემოს გამართვა</div>
+                <div class="s-topics">
+                  VS Code · GitHub · როგორ მუშაობს ვები · HTML ფაილი
+                </div>
+                <div class="s-activity">
+                  ⚡ Live Coding: შენი პირველი გვერდი
+                </div>
+                <div class="s-activity">
+                  🏠 Homework: შექმენი "About Me" HTML გვერდი (სახელი, ფოტო,
+                  ჰობი)
+                </div>
+              </div>
+              <div class="s-tags">
+                <span class="tag">VS Code</span><span class="tag">GitHub</span
+                ><span class="tag">HTML</span>
+              </div>
+            </div>
+
+            <!-- LECTURE 2 -->
+            <div class="session-row">
+              <div class="s-num">
+                <strong>ლექცია 2</strong><span>2 საათი</span>
+              </div>
+              <div class="s-content">
+                <div class="s-title">HTML სტრუქტურა მარტივად</div>
+                <div class="s-topics">ტეგები · სურათები · ლინკები · სიები</div>
+                <div class="s-activity">⚡ პრაქტიკა: მინი საიტის აწყობა</div>
+                <div class="s-activity">
+                  🏠 Homework: დაამატე 2 ახალი გვერდი (Contact + Gallery)
+                </div>
+              </div>
+              <div class="s-tags">
+                <span class="tag">HTML</span><span class="tag">Links</span>
+              </div>
+            </div>
+
+            <!-- LECTURE 3 -->
+            <div class="session-row">
+              <div class="s-num">
+                <strong>ლექცია 3</strong><span>2 საათი</span>
+              </div>
+              <div class="s-content">
+                <div class="s-title">CSS სტილი</div>
+                <div class="s-topics">
+                  ფერები · ფონტები · Box Model · DevTools
+                </div>
+                <div class="s-activity">⚡ შენი საიტის გალამაზება</div>
+                <div class="s-activity">
+                  🏠 Homework: დაასტილე შენი საიტი (colors + fonts + spacing)
+                </div>
+              </div>
+              <div class="s-tags">
+                <span class="tag">CSS</span><span class="tag">Design</span>
+              </div>
+            </div>
+
+            <!-- LECTURE 4 -->
+            <div class="session-row">
+              <div class="s-num">
+                <strong>ლექცია 4</strong><span>2 საათი</span>
+              </div>
+              <div class="s-content">
+                <div class="s-title">Responsive დიზაინი</div>
+                <div class="s-topics">
+                  Flexbox · Mobile view · Media Queries
+                </div>
+                <div class="s-activity">⚡ საიტის მობილურზე მორგება</div>
+                <div class="s-activity">
+                  🏠 Homework: გააკეთე შენი საიტი responsive (მობილურზეც
+                  მუშაობდეს)
+                </div>
+              </div>
+              <div class="s-tags">
+                <span class="tag">Flexbox</span
+                ><span class="tag">Responsive</span>
+              </div>
+            </div>
+
+            <!-- BLOCK 2 -->
+            <div class="block-label">
+              <span class="block-label-num">ბლოკი 2</span>
+              პროექტი & რეალური ინსტრუმენტები
+            </div>
+
+            <!-- LECTURE 5 -->
+            <div class="session-row">
+              <div class="s-num">
+                <strong>ლექცია 5</strong><span>2 საათი</span>
+              </div>
+              <div class="s-content">
+                <div class="s-title">Bootstrap + AI tools</div>
+                <div class="s-topics">
+                  Bootstrap · სწრაფი დიზაინი · ChatGPT · GitHub Copilot
+                </div>
+                <div class="s-activity">⚡ Bootstrap-ით UI აწყობა</div>
+                <div class="s-activity">
+                  🏠 Homework: გამოიყენე Bootstrap და გადააკეთე შენი საიტის
+                  დიზაინი
+                </div>
+              </div>
+              <div class="s-tags">
+                <span class="tag">Bootstrap</span><span class="tag">AI</span>
+              </div>
+            </div>
+
+            <!-- LECTURE 6 -->
+            <div class="session-row">
+              <div class="s-num">
+                <strong>ლექცია 6</strong><span>2 საათი</span>
+              </div>
+              <div class="s-content">
+                <div class="s-title">პროექტის ვორქშოპი</div>
+                <div class="s-topics">
+                  დახმარება · შეცდომების გასწორება · UX
+                </div>
+                <div class="s-activity">⚡ Code Review ერთმანეთში</div>
+                <div class="s-activity">
+                  🏠 Homework: დაასრულე შენი პროექტი (final touches)
+                </div>
+              </div>
+              <div class="s-tags">
+                <span class="tag">Review</span>
+              </div>
+            </div>
+
+            <!-- DEMO DAY -->
+            <div class="session-row">
+              <div class="s-num">
+                <strong>Demo Day</strong><span>2 საათი</span>
+              </div>
+              <div class="s-content">
+                <div class="s-title">პრეზენტაცია 🚀</div>
+                <div class="s-topics">
+                  შენი საიტი · გამოცდილება · რა ისწავლე
+                </div>
+                <div class="s-activity">⚡ რეალური აუდიტორია</div>
+                <div class="s-activity">
+                  🏠 Bonus: ატვირთე GitHub-ზე და გაუზიარე სხვებს
+                </div>
+              </div>
+              <div class="s-tags">
+                <span class="tag">Presentation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FINAL PROJECT -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-num">04</span>
+            <h2 class="section-title">ფინალური პროექტი</h2>
+            <div class="section-rule"></div>
+          </div>
+          <div class="two-col">
+            <div class="card">
+              <div class="card-title">📄 პროექტის აღწერა</div>
+              <p class="card-desc">
+                სტუდენტებმა ცალკე ანდ ჯგუფებში უნდა შექმნან სასურველ თემაზე ვებგვერდი HTML
+                და CSS-ის გამოყენებით.
+              </p>
+            </div>
+            <div class="card">
+              <div class="card-title">✅ მოთხოვნები</div>
+              <ul class="check-list">
+                <li>მინიმუმ 3 გვერდი</li>
+                <li>Responsive დიზაინი</li>
+                <li>სემანტიკური HTML</li>
+                <li>CSS სტილიზაცია</li>
+                <li>ვიზუალური ელემენტები</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- ASSESSMENT -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-num">05</span>
+            <h2 class="section-title">შეფასების სისტემა</h2>
+            <div class="section-rule"></div>
+          </div>
+          <div class="two-col">
+            <div class="card">
+              <div class="card-title">📊 კომპონენტები</div>
+              <ul class="check-list">
+                <li>ფინალური პროექტი — 50%</li>
+                <li>აქტივობა და ჩართულობა — 30%</li>
+                <li>დასწრება — 20%</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-title">🧠 კრიტერიუმები</div>
+              <ul class="check-list">
+                <li>კოდის სისუფთავე და სტრუქტურა</li>
+                <li>Responsive დიზაინის გამოყენება</li>
+                <li>სემანტიკური HTML</li>
+                <li>პრეზენტაციის უნარი</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- OUTCOMES -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-num">06</span>
+            <h2 class="section-title">სწავლის შედეგები</h2>
+            <div class="section-rule"></div>
+          </div>
+          <div class="outcomes-grid">
+            <div class="outcome-item">
+              <div class="outcome-icon">01</div>
+              <div class="outcome-text">
+                შეძლებს მინიმუმ 3-გვერდიანი ვებგვერდის შექმნას HTML/CSS-ის
+                გამოყენებით
+              </div>
+            </div>
+            <div class="outcome-item">
+              <div class="outcome-icon">02</div>
+              <div class="outcome-text">
+                გამოიყენებს Responsive დიზაინის პრინციპებს (Flexbox, Media
+                Queries)
+              </div>
+            </div>
+            <div class="outcome-item">
+              <div class="outcome-icon">03</div>
+              <div class="outcome-text">
+                გამოიყენებს GitHub-ს ვერსიების მართვისთვის და გუნდურ მუშაობაში
+              </div>
+            </div>
+            <div class="outcome-item">
+              <div class="outcome-icon">04</div>
+              <div class="outcome-text">
+                გამოიყენებს AI ინსტრუმენტებს (ChatGPT, Copilot) კოდის
+                გასაუმჯობესებლად
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESOURCES -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-num">07</span>
+            <h2 class="section-title">სასწავლო რესურსები</h2>
+            <div class="section-rule"></div>
+          </div>
+          <div class="resources-list">
+            <div class="resource-chip">
+              <span class="resource-chip-dot"></span>MDN Web Docs
+            </div>
+            <div class="resource-chip">
+              <span class="resource-chip-dot"></span>W3Schools
+            </div>
+            <div class="resource-chip">
+              <span class="resource-chip-dot"></span>freeCodeCamp
+            </div>
+            <div class="resource-chip">
+              <span class="resource-chip-dot"></span>YouTube სასწავლო ვიდეოები
+            </div>
+            <div class="resource-chip">
+              <span class="resource-chip-dot"></span>GitHub რეპოზიტორიები
+            </div>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+          <div class="footer-left">
+            <span class="footer-brand">GEOLAB</span>
+            <div class="footer-divider"></div>
+            <span class="footer-info"
+              >ესმირა აღამედოვა · esmira.agamedova@geolab.edu.ge</span
+            >
+          </div>
+          <div class="footer-badge">2026</div>
         </div>
       </div>
     </div>
-
-    <!-- ASSESSMENT -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">05</span>
-        <h2 class="section-title">შეფასების სისტემა</h2>
-        <div class="section-rule"></div>
-      </div>
-      <div class="two-col">
-        <div class="card">
-          <div class="card-title">📊 კომპონენტები</div>
-          <ul class="check-list">
-            <li>ფინალური პროექტი — 50%</li>
-            <li>აქტივობა და ჩართულობა — 30%</li>
-            <li>დასწრება — 20%</li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="card-title">🧠 კრიტერიუმები</div>
-          <ul class="check-list">
-            <li>კოდის სისუფთავე და სტრუქტურა</li>
-            <li>Responsive დიზაინის გამოყენება</li>
-            <li>სემანტიკური HTML</li>
-            <li>პრეზენტაციის უნარი</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- OUTCOMES -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">06</span>
-        <h2 class="section-title">სწავლის შედეგები</h2>
-        <div class="section-rule"></div>
-      </div>
-      <div class="outcomes-grid">
-        <div class="outcome-item">
-          <div class="outcome-icon">01</div>
-          <div class="outcome-text">შეძლებს მინიმუმ 3-გვერდიანი ვებგვერდის შექმნას HTML/CSS-ის გამოყენებით</div>
-        </div>
-        <div class="outcome-item">
-          <div class="outcome-icon">02</div>
-          <div class="outcome-text">გამოიყენებს Responsive დიზაინის პრინციპებს (Flexbox, Media Queries)</div>
-        </div>
-        <div class="outcome-item">
-          <div class="outcome-icon">03</div>
-          <div class="outcome-text">გამოიყენებს GitHub-ს ვერსიების მართვისთვის და გუნდურ მუშაობაში</div>
-        </div>
-        <div class="outcome-item">
-          <div class="outcome-icon">04</div>
-          <div class="outcome-text">გამოიყენებს AI ინსტრუმენტებს (ChatGPT, Copilot) კოდის გასაუმჯობესებლად</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RESOURCES -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-num">07</span>
-        <h2 class="section-title">სასწავლო რესურსები</h2>
-        <div class="section-rule"></div>
-      </div>
-      <div class="resources-list">
-        <div class="resource-chip"><span class="resource-chip-dot"></span>MDN Web Docs</div>
-        <div class="resource-chip"><span class="resource-chip-dot"></span>W3Schools</div>
-        <div class="resource-chip"><span class="resource-chip-dot"></span>freeCodeCamp</div>
-        <div class="resource-chip"><span class="resource-chip-dot"></span>YouTube სასწავლო ვიდეოები</div>
-        <div class="resource-chip"><span class="resource-chip-dot"></span>GitHub რეპოზიტორიები</div>
-      </div>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="footer">
-      <div class="footer-left">
-        <span class="footer-brand">GEOLAB</span>
-        <div class="footer-divider"></div>
-        <span class="footer-brand">TBC</span>
-        <div class="footer-divider"></div>
-        <span class="footer-info">ესმირა აღამედოვა · esmira.agamedova@geolab.edu.ge</span>
-      </div>
-      <div class="footer-badge">2026</div>
-    </div>
-
-  </div>
-</div>
-</body>
+  </body>
 </html>
